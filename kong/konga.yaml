@@ -1,0 +1,76 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: konga
+  labels:
+    app: konga
+    name: konga
+  annotations:
+    deployment.kubernetes.io/revision: '1'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: konga
+      name: konga
+  template:
+    metadata:
+      labels:
+        app: konga
+        name: konga
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: node-role.kubernetes.io/node1
+                operator: In
+                values:
+                - ""
+            weight: 100
+      containers:
+        - name: konga
+          image: hub.vpclub.cn/xyyd/pantsel/konga
+          ports:
+            - name: konga
+              containerPort: 1337
+              protocol: TCP
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: DB_ADAPTER
+              value: "postgres"
+            - name: DB_HOST
+              value: "postgresqlhost"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: konga
+            - name: DB_PASSWORD
+              value: "kong"
+            - name: DB_DATABASE
+              value: "konga_db"
+            - name: NODE_ENV
+              value: "production"
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: konga
+  labels:
+    app: konga
+spec:
+  ports:
+    - protocol: TCP
+      port: 1337 
+      targetPort: 1337
+      nodePort: 30990
+  selector:
+    app: konga
+  type: NodePort
+  sessionAffinity: None
+
+  

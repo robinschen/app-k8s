@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: konga
+  annotations:
+    konghq.com/strip-path: "true"
+    kubernetes.io/ingress.class: "kong"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /konga
+        backend:
+          serviceName: konga
+          servicePort: 1337

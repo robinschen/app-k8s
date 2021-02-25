@@ -1,0 +1,13 @@
+version: '2'
+services:
+  postgresql:
+    restart: always
+    privileged: true
+    image: hub.vpclub.cn/xyyd/postgres:11.7
+    volumes:
+    - ./data/postgresql:/var/lib/postgresql/data:Z
+    ports:
+    - 5432:5432
+    environment:
+    - POSTGRES_PASSWORD=V9c1u691d6
+    - TZ=PRC
