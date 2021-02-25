@@ -1,6 +1,6 @@
 
 # 部署postgresql
->注意：不能高版本
+>注意：预装k8s集群，生产postgresql最好集群
 
 使用docker安装
 
